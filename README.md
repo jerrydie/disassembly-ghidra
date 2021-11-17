@@ -19,12 +19,14 @@ Kernel: Linux 5.11.0-38-generic
 Architecture: x86-64
 
 ## Применение инструментов Ghidra
+Добавляем исполняемый файл в проект и запускаем:
+![](figures/1.jpg)
 
-![Добавляем исполняемый файл в проект и запускаем](figures/1.jpg)
+Применяем стандарные средства анализа:
+![](figures/2.jpg)
 
-![Применяем стандарные средства анализа](figures/2.jpg)
-
-![Далее, среди функций находим функцию main](figures/3.jpg)
+Далее, среди функций находим функцию main:
+![](figures/3.jpg)
 
 Получаем дезассемблированную программу, которую далее анализируем. В конце отчета предоставлен полный код анализируемого файла, однако для упрощения пояснений к алгоритму будут демонстрироваться основные значимые части.
 
@@ -189,8 +191,22 @@ Architecture: x86-64
 
 Код пользователя формируется по следующей формуле: $$1010+\sum_{char \in name} ASCII(char) + 1010$$, однако для имен: "Kirill", "Alisa", "Renat", "Yura", "Denis", "Alex", "kolyavv", ключ сгенерировать нельзя.
 
-По этой формуле можно написать кейген, реализован на языке python [](keygen.ipynb)
+По этой формуле можно написать кейген, реализован на языке python (keygen.ipynb):
 
+```Python
+def keygen(name):
+    banlist = ["Kirill", "Alisa", "Renat", "Yura", "Denis", "Alex", "kolyavv"]
+    key = 2*1010
+    if name in banlist:
+        return "You are banned, " + name + ", sorry, no key :("
+    for ch in name:
+        key += ord(ch)
+    return "Your key is: " + str(key) + ", " + name + "!"
+
+print("Enter your name: ")
+name = input()
+print(keygen(name))
+```
 
 ### Результат декомпиляции функции main
 ```C++
